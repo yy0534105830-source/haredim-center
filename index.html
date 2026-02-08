@@ -6,136 +6,55 @@
     <title>N-HAREDI | המהדורה המרכזית</title>
     <style>
         :root {
-            --walla-blue: #004fc5;
-            --n12-red: #d92128;
-            --bg: #f0f2f5;
+            --primary: #003366;
+            --accent: #d92128;
+            --bg: #f4f7f9;
+            --text: #222;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg); overflow-x: hidden; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: var(--bg); color: var(--text); }
 
-        /* Header */
-        header { background: var(--walla-blue); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        /* כותרת עליונה */
+        header { background: var(--primary); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .header-wrap { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 0 20px; justify-content: space-between; }
-        .logo { font-size: 28px; font-weight: 900; cursor: pointer; }
+        .logo { font-size: 30px; font-weight: 900; letter-spacing: -1.5px; }
+        .logo span { background: var(--accent); padding: 2px 8px; border-radius: 4px; margin-left: 10px; font-size: 16px; }
 
-        /* Main Grid */
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+        /* פריסת האתר */
+        .container { max-width: 1200px; margin: 20px auto; display: grid; grid-template-columns: 1fr 320px; gap: 25px; padding: 0 20px; }
 
-        /* כרטיסיית כתבה */
+        /* עיצוב כרטיסיית כתבה */
         .news-card { 
-            background: white; border-radius: 8px; margin-bottom: 20px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: 0.2s; 
-            cursor: pointer; border-right: 5px solid var(--walla-blue);
+            background: white; border-radius: 12px; margin-bottom: 20px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: 0.3s; 
+            cursor: pointer; overflow: hidden; display: flex; flex-direction: column;
+            border-right: 6px solid var(--primary);
         }
-        .news-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .card-body { padding: 20px; }
-        .category { color: var(--n12-red); font-weight: bold; font-size: 13px; margin-bottom: 8px; display: block; }
-        .news-card h2 { margin: 0 0 10px 0; font-size: 22px; line-height: 1.2; }
-        .news-card p { color: #555; line-height: 1.5; height: 3em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .card-body { padding: 25px; }
+        .tag { color: var(--accent); font-weight: bold; font-size: 13px; margin-bottom: 10px; display: block; }
+        .news-card h2 { margin: 0 0 12px 0; font-size: 24px; line-height: 1.2; color: #000; }
+        .news-card p { color: #555; line-height: 1.6; font-size: 16px; margin-bottom: 15px; }
+        .read-more { color: var(--primary); font-weight: bold; font-size: 14px; text-decoration: underline; }
+
+        /* סרגל צד */
+        .sidebar { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); align-self: start; }
+        .sidebar h3 { border-bottom: 3px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
+        .sidebar-item { border-bottom: 1px solid #eee; padding: 12px 0; font-size: 14px; }
+        .sidebar-item b { color: var(--accent); }
 
         /* חלון כתבה מלאה (Modal) */
-        .article-modal {
+        .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: flex-start;
-            padding-top: 50px; overflow-y: auto;
+            background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: flex-start;
+            padding-top: 40px; overflow-y: auto; backdrop-filter: blur(5px);
         }
         .modal-content {
-            background: white; width: 90%; max-width: 800px; border-radius: 12px;
-            padding: 40px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            margin-bottom: 50px;
+            background: white; width: 95%; max-width: 800px; border-radius: 15px;
+            padding: 40px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            margin-bottom: 50px; animation: fadeIn 0.3s ease;
         }
-        .close-btn { position: absolute; top: 20px; left: 20px; font-size: 30px; cursor: pointer; color: #999; }
-        .modal-content h1 { font-size: 35px; border-bottom: 3px solid var(--n12-red); padding-bottom: 15px; margin-top: 20px; }
-        .modal-content .full-text { font-size: 20px; line-height: 1.8; color: #333; white-space: pre-wrap; }
-
-        @media (max-width: 800px) { .container { grid-template-columns: 1fr; } .modal-content { padding: 20px; } }
-    </style>
-</head>
-<body>
-
-<header>
-    <div class="header-wrap">
-        <div class="logo">N-HAREDI</div>
-        <div style="font-size: 14px;">עדכונים שוטפים | 2026</div>
-    </div>
-</header>
-
-<div class="container">
-    <main id="news-feed">
-        </main>
-
-    <aside>
-        <div style="background: white; padding: 20px; border-radius: 8px;">
-            <h3 style="border-bottom: 2px solid var(--n12-red); padding-bottom: 5px;">מבזקים</h3>
-            <p style="font-size: 14px;">• כוננות בצפון • שיפור במצב הכלכלי • אלבום חדש לשוואקי •</p>
-        </div>
-    </aside>
-</div>
-
-<div id="myModal" class="article-modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeArticle()">&times;</span>
-        <span id="modal-category" class="category"></span>
-        <h1 id="modal-title"></h1>
-        <div id="modal-body" class="full-text"></div>
-    </div>
-</div>
-
-<script>
-    const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEiMj_g_wbxpfVx5Gz8Wquy59Sjw7o6ZRGHOVmdVvgst1yQEIrFAkeUnsitnyWNJ7pWvTnE8CPjkDT/pub?output=csv';
-
-    async function loadNews() {
-        try {
-            const response = await fetch(sheetURL);
-            const data = await response.text();
-            const rows = data.split('\n').slice(1);
-            const feed = document.getElementById('news-feed');
-            feed.innerHTML = '';
-
-            rows.forEach(row => {
-                const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                if (cols.length >= 2) {
-                    const title = cols[0].replace(/"/g, '');
-                    const content = cols[1].replace(/"/g, '');
-                    const category = (cols[2] || 'חדשות').replace(/"/g, '');
-
-                    const card = document.createElement('div');
-                    card.className = 'news-card';
-                    card.innerHTML = `
-                        <div class="card-body">
-                            <span class="category">${category}</span>
-                            <h2>${title}</h2>
-                            <p>${content}</p>
-                        </div>
-                    `;
-                    // פונקציית לחיצה
-                    card.onclick = () => openArticle(title, content, category);
-                    feed.appendChild(card);
-                }
-            });
-        } catch (e) { console.error("Error loading data"); }
-    }
-
-    function openArticle(title, content, category) {
-        document.getElementById('modal-title').innerText = title;
-        document.getElementById('modal-body').innerText = content;
-        document.getElementById('modal-category').innerText = category;
-        document.getElementById('myModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // מניעת גלילה ברקע
-    }
-
-    function closeArticle() {
-        document.getElementById('myModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    // סגירה בלחיצה מחוץ לחלון
-    window.onclick = function(event) {
-        if (event.target == document.getElementById('myModal')) closeArticle();
-    }
-
-    loadNews();
-</script>
-
-</body>
-</html>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .close-btn { position: absolute; top: 20px; left: 25px; font-size: 35px; cursor: pointer; color: #333; }
+        .modal-content h1 { font-size: 38px; line-height: 1.1; margin: 20px 0; }
+        .modal-content .full-text { font-size: 21px; line-height: 1.9; color:
