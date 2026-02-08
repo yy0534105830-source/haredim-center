@@ -3,169 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N12 - מרכז החרדים</title>
+    <title>וואלה! מרכז החרדים | חדשות ומוזיקה</title>
     <style>
         :root {
-            --n12-blue: #042144;
-            --n12-red: #ed1c24;
-            --n12-dark-bg: #e6e9ed;
-        }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            background-color: var(--n12-dark-bg);
-            color: #333;
+            --walla-blue: #004fc5;
+            --walla-dark: #1a1a1a;
+            --accent-color: #00d1b2; /* צבע רענן למוזיקה */
+            --bg-gray: #f0f2f5;
         }
 
-        /* סרגל עליון N12 */
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            background-color: var(--bg-gray);
+            color: var(--walla-dark);
+        }
+
+        /* סרגל עליון יוקרתי */
         header {
-            background-color: var(--n12-blue);
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(90deg, #003da1, var(--walla-blue));
+            color: white;
+            padding: 15px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 3px solid var(--n12-red);
-        }
-        .logo {
-            color: white;
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-        .logo span {
-            background-color: var(--n12-red);
-            padding: 0 5px;
-            margin-left: 2px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        /* סרגל קטגוריות */
-        nav {
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+
+        .logo span { font-weight: 300; opacity: 0.8; }
+
+        /* קטגוריות מהירות */
+        .nav-bar {
             background: white;
             padding: 10px 0;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .nav-bar span {
+            margin: 0 15px;
             font-weight: bold;
-            color: var(--n12-blue);
+            color: var(--walla-blue);
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .container {
-            max-width: 700px;
-            margin: 15px auto;
-            padding: 0 10px;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr; /* שורה אחת לנייד */
+            gap: 20px;
+            padding: 0 15px;
         }
 
-        /* עיצוב כתבה כמו N12 */
-        .news-card {
+        /* עיצוב כרטיסייה מקצועית */
+        .card {
             background: white;
-            margin-bottom: 12px;
+            border-radius: 8px;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            border-radius: 2px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
         }
 
-        .card-body {
-            padding: 15px;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
-        .category-tag {
-            color: var(--n12-red);
-            font-size: 14px;
+        .card.music { border-bottom-color: var(--accent-color); }
+        .card.news { border-bottom-color: var(--walla-blue); }
+
+        .card-body { padding: 20px; }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: bold;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .news-title {
-            font-size: 22px;
-            font-weight: bold;
-            line-height: 1.2;
-            color: #000;
+            color: white;
             margin-bottom: 10px;
-            cursor: pointer;
         }
 
-        .news-title:hover {
-            text-decoration: underline;
+        .badge-news { background-color: var(--walla-blue); }
+        .badge-music { background-color: var(--accent-color); }
+
+        .card h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            line-height: 1.3;
         }
 
-        .news-desc {
-            font-size: 16px;
-            line-height: 1.4;
-            color: #444;
+        .card p {
+            margin: 0;
+            color: #555;
+            line-height: 1.6;
         }
 
         .loading {
+            grid-column: 1 / -1;
             text-align: center;
             padding: 50px;
-            font-weight: bold;
+            font-size: 20px;
+            color: #888;
         }
 
-        /* פס אדום בתחתית כל כתבה */
-        .card-footer {
-            height: 4px;
-            background: var(--n12-red);
-            width: 40px;
-            margin: 0 15px 15px;
+        /* סידור בטבלה למחשב */
+        @media (min-width: 768px) {
+            .container { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo"><span>N</span>12 מרכז החרדים</div>
+    <div class="header-container">
+        <div class="logo">!walla <span>מרכז החרדים</span></div>
+        <div style="font-size: 12px;">יום ראשון, י"ט בשבט</div>
+    </div>
 </header>
 
-<nav>
-    חדשות | פוליטיקה | צבא וביטחון | כלכלה | עולם התורה
-</nav>
+<div class="nav-bar">
+    <span>חדשות</span> | <span>עולם התורה</span> | <span>מוזיקה</span> | <span>כלכלה</span>
+</div>
 
-<div class="container" id="news-container">
-    <div class="loading">טוען מבזקי חדשות...</div>
+<div class="container" id="main-content">
+    <div class="loading">מעדכן חדשות ומוזיקה מהשטח...</div>
 </div>
 
 <script>
+    // הקישור לטבלה שלך
     const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEiMj_g_wbxpfVx5Gz8Wquy59Sjw7o6ZRGHOVmdVvgst1yQEIrFAkeUnsitnyWNJ7pWvTnE8CPjkDT/pub?output=csv';
 
-    async function fetchNews() {
+    async function loadData() {
         try {
             const response = await fetch(sheetURL);
             const data = await response.text();
-            const rows = data.split('\n').slice(1); 
-            const container = document.getElementById('news-container');
-            container.innerHTML = ''; 
+            const rows = data.split('\n').slice(1);
+            const container = document.getElementById('main-content');
+            container.innerHTML = '';
 
             rows.forEach(row => {
-                const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                if (columns.length >= 2) {
-                    const title = columns[0].replace(/"/g, ''); 
-                    const content = columns[1].replace(/"/g, '');
-                    const category = columns[2] ? columns[2].replace(/"/g, '') : 'מבזק';
+                const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                if (cols.length >= 2) {
+                    const title = cols[0].replace(/"/g, '');
+                    const content = cols[1].replace(/"/g, '');
+                    const category = (cols[2] || 'חדשות').replace(/"/g, '').trim();
+                    
+                    // בחירת סטייל לפי קטגוריה
+                    const isMusic = category.includes('מוזיקה');
+                    const cardClass = isMusic ? 'music' : 'news';
+                    const badgeClass = isMusic ? 'badge-music' : 'badge-news';
 
-                    const card = `
-                        <div class="news-card">
+                    container.innerHTML += `
+                        <div class="card ${cardClass}">
                             <div class="card-body">
-                                <span class="category-tag">${category}</span>
-                                <div class="news-title">${title}</div>
-                                <div class="news-desc">${content}</div>
+                                <span class="badge ${badgeClass}">${category}</span>
+                                <h2>${title}</h2>
+                                <p>${content}</p>
                             </div>
-                            <div class="card-footer"></div>
                         </div>
                     `;
-                    container.innerHTML += card;
                 }
             });
         } catch (e) {
-            document.getElementById('news-container').innerHTML = 'שגיאה בטעינת המבזקים.';
+            document.getElementById('main-content').innerHTML = 'חלה שגיאה בטעינת הנתונים.';
         }
     }
-    fetchNews();
-    setInterval(fetchNews, 60000); // רענון אוטומטי כל דקה
+
+    loadData();
+    // רענון אוטומטי כל דקה
+    setInterval(loadData, 60000);
 </script>
 
 </body>
