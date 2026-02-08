@@ -2,177 +2,38 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N-HAREDI | המהדורה המרכזית</title>
+    <title>N-HAREDI | חדשות מהשטח</title>
     <style>
-        :root {
-            --primary: #003366;
-            --accent: #d92128;
-            --bg: #f4f7f9;
-        }
-
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg); color: #222; }
-
-        /* Header & Search */
-        header { background: var(--primary); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .header-wrap { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 0 20px; justify-content: space-between; gap: 20px; }
-        .logo { font-size: 28px; font-weight: 900; min-width: 150px; }
-        
-        .search-box { flex-grow: 1; max-width: 500px; position: relative; }
-        #searchInput { width: 100%; padding: 10px 20px; border-radius: 25px; border: none; font-size: 16px; outline: none; }
-
-        .container { max-width: 1200px; margin: 25px auto; display: grid; grid-template-columns: 1fr 320px; gap: 25px; padding: 0 20px; }
-
-        /* News Cards */
-        .news-card { 
-            background: white; border-radius: 12px; margin-bottom: 20px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer; 
-            transition: 0.3s; border-right: 6px solid var(--primary); overflow: hidden;
-        }
-        .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        .card-body { padding: 25px; }
-        .tag { color: var(--accent); font-weight: bold; font-size: 13px; margin-bottom: 10px; display: block; }
-        .news-card h2 { margin: 0 0 12px 0; font-size: 24px; color: #000; line-height: 1.2; }
-        .news-card p { color: #555; line-height: 1.6; font-size: 16px; }
-
-        /* Modal (Full Article) */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: flex-start;
-            padding-top: 50px; overflow-y: auto; backdrop-filter: blur(5px);
-        }
-        .modal-content { background: white; width: 90%; max-width: 800px; border-radius: 15px; padding: 40px; position: relative; margin-bottom: 50px; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .close-btn { position: absolute; top: 20px; left: 25px; font-size: 35px; cursor: pointer; color: #666; }
-        .full-text { font-size: 20px; line-height: 1.8; color: #333; white-space: pre-wrap; margin: 25px 0; }
-        .btn-link { display: inline-block; background: var(--primary); color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; }
-
-        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } .header-wrap { flex-direction: column; } }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f9; margin: 0; }
+        header { background: #003366; color: white; padding: 20px; text-align: center; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-right: 6px solid #003366; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .tag { color: #d92128; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
-
-<header>
-    <div class="header-wrap">
-        <div class="logo">N-HAREDI</div>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="חפש בחדשות היום..." onkeyup="searchFunction()">
-        </div>
-        <div id="live-date" style="font-size: 14px; font-weight: bold;"></div>
+    <header><h1>N-HAREDI</h1></header>
+    <div class="container" id="news-feed">
+        <h2 id="msg">טוען חדשות...</h2>
     </div>
-</header>
 
-<div class="container">
-    <main id="news-feed">
-        </main>
-
-    <aside style="background: white; padding: 20px; border-radius: 12px; align-self: start; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-        <h3 style="border-bottom: 3px solid var(--accent); padding-bottom: 10px;">מבזקים מהרגע</h3>
-        <p><b>21:10</b> - צה"ל מאשר: תקיפות נרחבות בלבנון.</p>
-        <p><b>20:45</b> - עומסי תנועה ביציאה מירושלים עקב עבודות.</p>
-        <p><b>20:15</b> - נפתלי קמפה בשיר חדש שסוחף את הישיבות.</p>
-        <p><b>19:30</b> - עדכון: מחיר הלחם יעלה הלילה ב-3%.</p>
-    </aside>
-</div>
-
-<div id="articleModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeArticle()">&times;</span>
-        <span id="modal-tag" class="tag"></span>
-        <h1 id="modal-title"></h1>
-        <div id="modal-body" class="full-text"></div>
-        <a id="modal-link" href="#" target="_blank" class="btn-link">🔗 לכתבה המקורית / פרטים נוספים</a>
-    </div>
-</div>
-
-<script>
-    // מאגר החדשות האמיתי והמעודכן (8 בפברואר 2026)
-    const newsData = [
-        {
-            tag: "ביטחון ופוליטיקה",
-            title: "המתיחות בצפון בשיא: צה\"ל תקף יעדי תשתית אסטרטגיים בלבנון",
-            summary: "בעקבות מטחי הירי הכבדים בסוף השבוע לעבר הגליל, חיל האוויר פתח במבצע ממוקד נגד מחסני אמל\"ח.",
-            full: "אחרי לילה מתוח במיוחד, דובר צה\"ל מעדכן כי מטוסי קרב תקפו שורת מטרות של חיזבאללה בעומק לבנון. התקיפות התמקדו במחסני אמל\"ח ומפקדות פיקוד.\n\nפיקוד העורף מרענן את ההנחיות לתושבי קו העימות וקורא לשהות בקרבת מרחבים מוגנים. במקביל, בקואליציה נשמעים קולות הקוראים להחרפת התגובה עד להסרת האיום מעל יישובי הצפון.",
-            link: "https://www.idf.il"
-        },
-        {
-            tag: "עולם התורה",
-            title: "היסטוריה בעולם הישיבות: נחנך קמפוס 'היכל התורה' החדש בבית שמש",
-            summary: "מאות משתתפים וגדולי ישראל הגיעו לחנוכת הבית של הישיבה הגדולה בלב רמת בית שמש ד'.",
-            full: "מעמד מרגש של 'חנוכת הבית' נערך אמש בשכונת רמת בית שמש ד'. הקמפוס החדש, המשתרע על פני דונמים רבים, כולל היכל תורה מפואר, חדרי לימוד מתקדמים ופנימייה ברמה גבוהה.\n\nרבני השכונה וגדולי הדור שהשתתפו במעמד נשאו דברי חיזוק והדגישו את חשיבות בניית מבצרי תורה בלב השכונות החדשות המתפתחות.",
-            link: ""
-        },
-        {
-            tag: "כלכלה",
-            title: "גל התייקרויות נוסף: מחירי החלב והלחם יעלו הבוקר",
-            summary: "ועדת המחירים הממשלתית אישרה את העדכון; משפחות ברוכות ילדים חוששות מההשפעה על סל הקניות.",
-            full: "החל מהבוקר יורגשו עליות מחירים במוצרי היסוד בפיקוח. מחיר הלחם האחיד יעלה ב-3.2% ומחירי מוצרי החלב ב-2.8%.\n\nהסיבה לעלייה היא התייקרות חומרי הגלם בעולם ועלויות השינוע. ארגוני חסד במגזר החרדי מדווחים על עלייה בפניות לסיוע ומזהירים מפני שחיקה נוספת בכוח הקנייה של השכבות החלשות.",
-            link: "https://www.google.com/search?q=מחירי+הלחם"
-        },
-        {
-            tag: "מוזיקה",
-            title: "בדרך לאלבום זהב: הסינגל החדש של נפתלי קמפה כובש את המצעדים",
-            summary: "השיר 'אור החיים' ששוחרר לפני פחות משבוע כבר הפך להמנון בישיבות ובאירועים.",
-            full: "נפתלי קמפה עושה זאת שוב. השיר החדש, בלחנו המרגש של קמפה עצמו ובעיבודו של אלי קליין, צבר מעל חצי מיליון השמעות ביוטיוב תוך ימים ספורים.\n\nהשיר, העוסק בכיסופים לתורה, התקבל בחום רב בקרב בני הישיבות והפך תוך זמן קצר לשיר המבוקש ביותר בחתונות ובקומזיצים ברחבי הארץ.",
-            link: "https://www.youtube.com"
+    <script>
+        function loadNews() {
+            const news = JSON.parse(localStorage.getItem('news_data') || '[]');
+            const feed = document.getElementById('news-feed');
+            if(news.length === 0) {
+                document.getElementById('msg').innerText = "עדיין אין כתבות. כנס לדף הניהול כדי לפרסם!";
+                return;
+            }
+            document.getElementById('msg').style.display = 'none';
+            news.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<span class="tag">${item.tag}</span><h2>${item.title}</h2><p>${item.content}</p>`;
+                feed.appendChild(card);
+            });
         }
-    ];
-
-    function displayNews(data) {
-        const feed = document.getElementById('news-feed');
-        feed.innerHTML = '';
-        data.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'news-card';
-            card.onclick = () => openArticle(item);
-            card.innerHTML = `
-                <div class="card-body">
-                    <span class="tag">${item.tag}</span>
-                    <h2>${item.title}</h2>
-                    <p>${item.summary}</p>
-                    <span style="color: var(--primary); font-weight: bold; font-size: 14px;">קרא עוד ></span>
-                </div>
-            `;
-            feed.appendChild(card);
-        });
-    }
-
-    function searchFunction() {
-        const query = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = newsData.filter(item => 
-            item.title.toLowerCase().includes(query) || 
-            item.tag.toLowerCase().includes(query)
-        );
-        displayNews(filtered);
-    }
-
-    function openArticle(item) {
-        document.getElementById('modal-tag').innerText = item.tag;
-        document.getElementById('modal-title').innerText = item.title;
-        document.getElementById('modal-body').innerText = item.full;
-        
-        const linkBtn = document.getElementById('modal-link');
-        if(item.link) {
-            linkBtn.href = item.link;
-            linkBtn.style.display = 'inline-block';
-        } else {
-            linkBtn.style.display = 'none';
-        }
-        
-        document.getElementById('articleModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeArticle() {
-        document.getElementById('articleModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    document.getElementById('live-date').innerText = new Date().toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-
-    window.onload = () => displayNews(newsData);
-    window.onclick = (e) => { if(e.target == document.getElementById('articleModal')) closeArticle(); };
-</script>
-
+        window.onload = loadNews;
+    </script>
 </body>
 </html>
