@@ -1,13 +1,57 @@
 <!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מרכז החרדים - ניהול חכם</title>
+    <style>
+        :root { --primary: #1a2a3a; --gold: #d4af37; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--bg); color: #333; }
+        header { background: var(--primary); color: white; padding: 30px; text-align: center; border-bottom: 5px solid var(--gold); }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .news-card { background: white; margin-bottom: 20px; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-right: 6px solid var(--gold); }
+        .news-card h2 { margin-top: 0; color: var(--primary); }
+        .category { display: inline-block; background: var(--primary); color: var(--gold); padding: 4px 12px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 12px; }
+        .loading { text-align: center; padding: 100px; font-size: 1.5rem; color: #777; }
+    </style>
+</head>
+<body>
 
-<html lang="he" dir="rtl"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>מרכז החרדים - ניהול חכם</title> <style> :root { --primary: #1a2a3a; --gold: #d4af37; --bg: #f4f7f6; } body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--bg); color: #333; } header { background: var(--primary); color: white; padding: 30px; text-align: center; border-bottom: 5px solid var(--gold); } .container { max-width: 800px; margin: 20px auto; padding: 0 15px; } .news-card { background: white; margin-bottom: 20px; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-right: 6px solid var(--gold); } .news-card h2 { margin-top: 0; color: var(--primary); } .category { display: inline-block; background: var(--primary); color: var(--gold); padding: 4px 12px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 12px; } .loading { text-align: center; padding: 100px; font-size: 1.5rem; color: #777; } </style> </head> <body>
+<header>
+    <h1>מרכז החרדים</h1>
+    <p>עדכונים שוטפים מהשטח | ניהול באמצעות גוגל שיטס</p>
+</header>
 
-<header> <h1>מרכז החרדים</h1> <p>עדכונים שוטפים מהשטח | ניהול באמצעות גוגל שיטס</p> </header>
+<div class="container" id="news-container">
+    <div class="loading">טוען נתונים מהטבלה...</div>
+</div>
 
-<div class="container" id="news-container"> <div class="loading">טוען נתונים מהטבלה...</div> </div>
+<script>
+    const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEiMj_g_wbxpfVx5Gz8Wquy59Sjw7o6ZRGHOVmdVvgst1yQEIrFAkeUnsitnyWNJ7pWvTnE8CPjkDT/pub?output=csv';
 
-<script> const sheetURL = '';
+    async function fetchNews() {
+        try {
+            const response = await fetch(sheetURL);
+            const data = await response.text();
+            const rows = data.split('\n').slice(1); 
+            const container = document.getElementById('news-container');
+            container.innerHTML = ''; 
 
+            rows.forEach(row => {
+                const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                if (columns.length >= 2) {
+                    const title = columns[0].replace(/"/g, ''); 
+                    const content = columns[1].replace(/"/g, '');
+                    const category = columns[2] ? columns[2].replace(/"/g, '') : 'כללי';
+                    container.innerHTML += '<div class="news-card"><span class="category">' + category + '</span><h2>' + title + '</h2><div>' + content + '</div></div>';
+                }
+            });
+        } catch (e) {
+            document.getElementById('news-container').innerHTML = 'שגיאה בחיבור לטבלה.';
+        }
+    }
+    fetchNews();
 </script>
 
-</body> </html>
+</body>
+</html>
