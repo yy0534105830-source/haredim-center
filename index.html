@@ -5,95 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>N-HAREDI | המהדורה המרכזית</title>
     <style>
-        :root { --blue: #003366; --red: #e31e24; --bg: #f5f7f9; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg); color: #222; }
-        
-        /* Header */
-        header { background: var(--blue); color: white; padding: 20px 0; text-align: center; border-bottom: 4px solid var(--red); }
-        .logo { font-size: 35px; font-weight: 900; letter-spacing: -1.5px; }
+        :root {
+            --walla-blue: #004fc5;
+            --n12-red: #d92128;
+            --dark-blue: #002b6b;
+            --bg-light: #f6f8fa;
+        }
 
-        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: var(--bg-light); color: #333; }
 
-        /* כתבה ראשית ענקית */
-        .main-story { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .main-story-content { padding: 30px; border-right: 8px solid var(--red); }
-        .main-story h1 { font-size: 38px; margin: 0 0 15px 0; line-height: 1.1; color: #000; }
-        .main-story p { font-size: 19px; color: #444; line-height: 1.6; }
+        /* ניווט עליון */
+        .top-stripe { background: #000; color: #fff; padding: 6px 20px; font-size: 13px; display: flex; justify-content: space-between; }
+        header { background: var(--walla-blue); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 0 20px; }
+        .logo { font-size: 32px; font-weight: 900; letter-spacing: -2px; }
+        .logo span { color: #fff; opacity: 0.7; font-weight: 300; margin-right: 10px; font-size: 18px; }
 
-        /* רשת הכתבות המרכזיות */
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .card { background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        .card-inner { padding: 20px; border-top: 4px solid var(--blue); }
-        .tag { font-weight: bold; color: var(--red); font-size: 13px; margin-bottom: 10px; display: block; }
-        .card h2 { font-size: 22px; margin: 0 0 12px 0; line-height: 1.3; color: #000; }
-        .card p { font-size: 16px; color: #555; margin-bottom: 0; }
+        /* סרט מבזקים אדום */
+        .breaking-news-strip { background: #fff; border-bottom: 2px solid var(--n12-red); padding: 10px 0; overflow: hidden; }
+        .ticker { display: inline-block; white-space: nowrap; animation: march 40s linear infinite; color: var(--n12-red); font-weight: bold; font-size: 15px; }
+        @keyframes march { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-        /* פס מבזקים */
-        .ticker { background: white; border-bottom: 1px solid #ddd; padding: 10px; overflow: hidden; white-space: nowrap; }
-        .ticker-text { display: inline-block; animation: scroll 30s linear infinite; color: var(--red); font-weight: bold; }
-        @keyframes scroll { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        /* מבנה הדף */
+        .wrapper { max-width: 1200px; margin: 25px auto; display: grid; grid-template-columns: 1fr 320px; gap: 25px; padding: 0 20px; }
 
-        @media (max-width: 768px) { .main-story h1 { font-size: 28px; } }
+        /* כתבת ענק - פרויקט כסלו */
+        .main-headline { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.08); margin-bottom: 30px; border-top: 6px solid var(--walla-blue); }
+        .headline-body { padding: 40px; }
+        .category-label { color: var(--n12-red); font-weight: bold; font-size: 14px; text-transform: uppercase; margin-bottom: 15px; display: block; }
+        .main-headline h1 { font-size: 42px; margin: 0 0 20px 0; line-height: 1.1; color: #000; }
+        .main-headline p { font-size: 21px; color: #444; line-height: 1.6; }
+
+        /* גריד כתבות משניות */
+        .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .small-card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-right: 4px solid var(--walla-blue); }
+        .small-card h3 { margin-top: 0; font-size: 20px; line-height: 1.3; }
+
+        /* סרגל צד - מבזקים */
+        .sidebar { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); align-self: start; }
+        .sidebar-title { font-size: 22px; font-weight: 900; color: var(--dark-blue); border-bottom: 3px solid var(--n12-red); padding-bottom: 10px; margin-bottom: 15px; }
+        .flash-item { border-bottom: 1px solid #eee; padding: 12px 0; font-size: 14px; line-height: 1.4; }
+        .flash-item b { color: var(--n12-red); margin-left: 5px; }
+
+        @media (max-width: 900px) {
+            .wrapper { grid-template-columns: 1fr; }
+            .news-grid { grid-template-columns: 1fr; }
+            .main-headline h1 { font-size: 28px; }
+        }
     </style>
 </head>
 <body>
 
+<div class="top-stripe">
+    <div>יום ראשון, י"ט בשבט תשפ"ו | 08.02.2026</div>
+    <div>מערכת החדשות של מרכז החרדים</div>
+</div>
+
 <header>
-    <div class="logo">N-HAREDI <span>2026</span></div>
+    <div class="header-content">
+        <div class="logo">N-HAREDI <span>מרכז החרדים</span></div>
+    </div>
 </header>
 
-<div class="ticker">
-    <div class="ticker-text">
-        • מבזק: התפתחות דרמטית בחקירת השחיתות בעיריית אלעד • מזג האוויר: חשש משיטפונות בנחלי הדרום • עולם הישיבות נערך למסע הקודש של גדולי ישראל • 
+<div class="breaking-news-strip">
+    <div class="ticker">
+        • דרמה בבני ברק: פיצוץ בצינור מים ראשי ברחוב רבי עקיבא • חוק הגיוס: גדולי ישראל במכתב חריף נגד המתווה המוצע • מוזיקה: אלבום חדש בדרך למרדכי בן דוד • הבורסה ננעלה בעליות שערים קלות • 
     </div>
 </div>
 
-<div class="container">
-    <article class="main-story">
-        <div class="main-story-content">
-            <span class="tag">פוליטיקה | כותרת ראשית</span>
-            <h1>מתווה הגיוס החדש יוצא לדרך: הסכמות חסרות תקדים בין צה"ל לראשי הישיבות</h1>
-            <p>הבוקר נחשף המסמך המלא של "מתווה השוויון החדש". לפי הסיכומים, יוקמו שלוש חטיבות חרדיות חדשות שיתאימו לאורח החיים הדתי באופן מלא, בעוד שבני הישיבות שתורתם אומנותם יקבלו פטור מוסדר בחוק. בסיעות החרדיות מביעים שביעות רצון זהירה: "שמרנו על עולם התורה, אבל אנחנו מבינים את צרכי השעה".</p>
-        </div>
-    </article>
-
-    <div class="news-grid" id="news-grid">
-        
-        <div class="card">
-            <div class="card-inner">
-                <span class="tag">מוזיקה</span>
-                <h2>המהפכה של שוואקי: אלבום ה-AI הראשון במוזיקה החסידית</h2>
-                <p>יעקב שוואקי משיק פרויקט טכנולוגי שבו שולבו קולות של מקהלות ענק שיוצרו בבינה מלאכותית. "זה נשמע יותר אמיתי מהמציאות", אומרים המעבדים יואלי דיקמן ואלי לאופר בראיון מיוחד.</p>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-inner">
-                <span class="tag">כלכלה ונדל"ן</span>
-                <h2>הבשורה לזוגות הצעירים? אושרה בניית 5,000 יח"ד ב'כסלו' הסמוכה לבית שמש</h2>
+<div class="wrapper">
+    
+    <main>
+        <article class="main-headline">
+            <div class="headline-body">
+                <span class="category-label">כלכלה ונדל"ן | בשורה לזוגות הצעירים</span>
+                <h1>אושרה בניית 5,000 יח"ד ב'כסלו' הסמוכה לבית שמש</h1>
                 <p>המועצה הארצית לתכנון ובנייה נתנה אור ירוק לעיר החרדית החדשה. המחיר הצפוי לדירת 3 חדרים: החל מ-1.4 מיליון ש"ח. האם זה הפתרון למצוקת הדיור החרדית?</p>
             </div>
-        </div>
+        </article>
 
-        <div class="card">
-            <div class="card-inner">
-                <span class="tag">עולם התורה</span>
-                <h2>אלפים ביומא דהילולא של בעל ה'קהילות יעקב' זצ"ל</h2>
-                <p>רבבות נהרו הלילה לציונו של הסטייפלר בבית העלמין בבני ברק. בראשות גדולי ישראל נערכו מעמדי תפילה לישועת הכלל והפרט. המשטרה חסמה את הרחובות הסמוכים עקב העומס הכבד.</p>
+        <div class="news-grid" id="user-content">
+            <div class="small-card">
+                <span class="category-label" style="color: #1db954;">מוזיקה</span>
+                <h3>סינגל חדש: שוואקי ופריד בדואט ענק</h3>
+                <p>השניים נפגשו באולפן בניו יורק להקלטת "אחווה". הקליפ הרשמי צפוי לצאת לקראת פורים.</p>
+            </div>
+            <div class="small-card">
+                <span class="category-label">עולם התורה</span>
+                <h3>מעמד הנחת אבן הפינה לישיבה החדשה באלעד</h3>
+                <p>מאות בחורי חמד השתתפו במעמד בראשות גדולי ישראל. הקמפוס יכיל למעלה מ-400 תלמידים.</p>
             </div>
         </div>
+    </main>
 
-        <div class="card">
-            <div class="card-inner">
-                <span class="tag">טכנולוגיה</span>
-                <h2>הסמארטפון המוגן החדש שכבש את השוק: "סינון ברמת חומרה"</h2>
-                <p>חברת 'תקשורת כשרה' הציגה מכשיר חדש שבו מערכת הסינון מובנית בתוך המעבד. המכשיר קיבל את הסכמת ועדת הרבנים לענייני תקשורת והפך ללהיט בקרב אנשי עסקים חרדים.</p>
-            </div>
+    <aside class="sidebar">
+        <div class="sidebar-title">מבזקי 24/7</div>
+        <div id="ticker-list">
+            <div class="flash-item"><b>14:50</b> כוננות שיא בצפון: צבע אדום נשמע ביישובי הגליל העליון.</div>
+            <div class="flash-item"><b>14:35</b> שר הבינוי והשיכון: "עיר היין" באשקלון תותאם גם למגזר החרדי.</div>
+            <div class="flash-item"><b>14:10</b> בני ברק: אירוע חבלני נשלל, מדובר בחפץ חשוד שטופל על ידי המשטרה.</div>
+            <div class="flash-item"><b>13:45</b> דולר: המטבע האמריקאי נחלש ב-0.5% מול השקל.</div>
+            <div class="flash-item"><b>13:20</b> פתיחת זמן קיץ: הישיבות נערכות לרישום שיא של תלמידים.</div>
         </div>
+    </aside>
 
-        <div class="card">
-            <div class="card-inner">
-                <span class="tag">חוץ</span>
-                <h2>קהילת סאטמר בניו יורק נערכת למסע הקודש של האדמו"ר לארץ ישראל</h2>
-                <p>הכנות קדחתניות בוויליאמסבורג לקראת ביקורו של האדמו"ר בחודש הבא. המשלחת תכלול מאות נ
+</div>
+
+<script>
+    const sheetURL = '
