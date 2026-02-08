@@ -9,41 +9,40 @@
             --primary: #003366;
             --accent: #d92128;
             --bg: #f4f7f9;
-            --text: #222;
+            --link-color: #007bff;
         }
 
-        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: var(--bg); color: var(--text); }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: var(--bg); color: #222; }
 
-        /* כותרת עליונה */
+        /* כותרת */
         header { background: var(--primary); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .header-wrap { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 0 20px; justify-content: space-between; }
-        .logo { font-size: 30px; font-weight: 900; letter-spacing: -1.5px; }
-        .logo span { background: var(--accent); padding: 2px 8px; border-radius: 4px; margin-left: 10px; font-size: 16px; }
+        .logo { font-size: 30px; font-weight: 900; }
 
-        /* פריסת האתר */
         .container { max-width: 1200px; margin: 20px auto; display: grid; grid-template-columns: 1fr 320px; gap: 25px; padding: 0 20px; }
 
-        /* עיצוב כרטיסיית כתבה */
+        /* כרטיסיית כתבה */
         .news-card { 
             background: white; border-radius: 12px; margin-bottom: 20px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: 0.3s; 
-            cursor: pointer; overflow: hidden; display: flex; flex-direction: column;
-            border-right: 6px solid var(--primary);
+            cursor: pointer; overflow: hidden; border-right: 6px solid var(--primary);
         }
         .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .card-body { padding: 25px; }
         .tag { color: var(--accent); font-weight: bold; font-size: 13px; margin-bottom: 10px; display: block; }
-        .news-card h2 { margin: 0 0 12px 0; font-size: 24px; line-height: 1.2; color: #000; }
+        .news-card h2 { margin: 0 0 12px 0; font-size: 24px; line-height: 1.2; }
         .news-card p { color: #555; line-height: 1.6; font-size: 16px; margin-bottom: 15px; }
-        .read-more { color: var(--primary); font-weight: bold; font-size: 14px; text-decoration: underline; }
+        
+        /* עיצוב קישור */
+        .source-link { 
+            display: inline-block; background: #eef2f7; color: var(--primary); 
+            padding: 8px 15px; border-radius: 5px; text-decoration: none; 
+            font-weight: bold; font-size: 14px; margin-top: 10px;
+            border: 1px solid #d1d9e6;
+        }
+        .source-link:hover { background: var(--primary); color: white; }
 
-        /* סרגל צד */
-        .sidebar { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); align-self: start; }
-        .sidebar h3 { border-bottom: 3px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
-        .sidebar-item { border-bottom: 1px solid #eee; padding: 12px 0; font-size: 14px; }
-        .sidebar-item b { color: var(--accent); }
-
-        /* חלון כתבה מלאה (Modal) */
+        /* חלון כתבה (Modal) */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: flex-start;
@@ -51,36 +50,29 @@
         }
         .modal-content {
             background: white; width: 95%; max-width: 800px; border-radius: 15px;
-            padding: 40px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-            margin-bottom: 50px; animation: fadeIn 0.3s ease;
+            padding: 40px; position: relative; margin-bottom: 50px;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .close-btn { position: absolute; top: 20px; left: 25px; font-size: 35px; cursor: pointer; color: #333; }
+        .close-btn { position: absolute; top: 20px; left: 25px; font-size: 35px; cursor: pointer; }
         .modal-content h1 { font-size: 38px; line-height: 1.1; margin: 20px 0; }
-        .modal-content .full-text { font-size: 21px; line-height: 1.9; color: #333; white-space: pre-wrap; }
+        .full-text { font-size: 20px; line-height: 1.8; white-space: pre-wrap; margin-bottom: 30px; }
 
-        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } .modal-content { padding: 20px; } .modal-content h1 { font-size: 28px; } }
+        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <header>
     <div class="header-wrap">
-        <div class="logo"><span>LIVE</span> N-HAREDI</div>
+        <div class="logo">N-HAREDI</div>
         <div id="date-display"></div>
     </div>
 </header>
 
 <div class="container">
-    <main id="news-feed">
-        </main>
-
-    <aside class="sidebar">
-        <h3>מבזקים אחרונים</h3>
-        <div class="sidebar-item"><b>14:30</b> התפתחות בחקירת התאונה הקטלנית בכביש 1.</div>
-        <div class="sidebar-item"><b>14:12</b> מזג האוויר: ירידה בטמפרטורות בסוף השבוע.</div>
-        <div class="sidebar-item"><b>13:55</b> בני ברק: עומסי תנועה כבדים בצומת קוקה קולה.</div>
-        <div class="sidebar-item"><b>13:20</b> עולם התורה: פתיחת הרישום לישיבות קטנות בבית שמש.</div>
+    <main id="news-feed"></main>
+    <aside style="background: white; padding: 20px; border-radius: 12px; align-self: start;">
+        <h3 style="border-bottom: 3px solid var(--accent); padding-bottom: 10px;">מבזקים</h3>
+        <p>• כוננות שיא בצפון • אושרו אלפי יחידות דיור • סינגל חדש לשוואקי •</p>
     </aside>
 </div>
 
@@ -90,35 +82,26 @@
         <span id="modal-tag" class="tag"></span>
         <h1 id="modal-title"></h1>
         <div id="modal-body" class="full-text"></div>
+        <a id="modal-link" href="#" target="_blank" class="source-link">🔗 למעבר לכתבה המקורית / קישור</a>
     </div>
 </div>
 
 <script>
-    // מאגר חדשות מובנה מהימים האחרונים
+    // הכתבות המובנות עם קישורים לדוגמה
     const staticNews = [
         {
-            tag: "פוליטיקה",
-            title: "דרמה לילית: מתווה חוק הגיוס הגיע להכרעה בבית גדולי ישראל",
-            summary: "אחרי שבועות של מתיחות, הושגו הסכמות על חוק הגיוס החדש שיסדיר את מעמד בני הישיבות.",
-            full: "אחרי שבועות ארוכים של מתיחות פוליטית ודיונים קדחתניים, הלילה הגיעה ההכרעה בנוגע למתווה חוק הגיוס החדש. בכירי הסיעות החרדיות נועדו עם גדולי ישראל והציגו את המתווה המעודכן שגובש מול משרד הביטחון.\n\nלפי המתווה, יישמר מעמד 'תורתו אומנותו' לכל בחור ישיבה המקדיש את זמנו ללימוד, תוך הקמת מסלולים ייעודיים ומותאמים למגזר החרדי עבור אלו שאינם לומדים. גורם ביהדות התורה מסר: 'הצלחנו להבטיח את המשך קיומו של עולם התורה ללא פשרות, תוך מתן פתרון חוקי ומסודר'."
-        },
-        {
-            tag: "כלכלה ונדל\"ן",
-            title: "בשורה לזוגות הצעירים: אושרו 5,000 יח\"ד בעיר החרדית 'כסלו'",
-            summary: "המועצה הארצית לתכנון ובנייה נתנה אור ירוק להקמת העיר החדשה הסמוכה לבית שמש.",
-            full: "היסטוריה בשוק הדיור החרדי: המועצה הארצית לתכנון ובנייה העניקה אתמול את האישורים הסופיים להקמת העיר החרדית החדשה 'כסלו'. העיר, שתיבנה בסמוך לבית שמש, צפויה לכלול בשלב הראשון כ-5,000 יחידות דיור במחירים מוזלים משמעותית ממחירי השוק.\n\nשר הבינוי והשיכון ציין כי מדובר בפתרון אסטרטגי למצוקת הדיור במגזר. המגרשים הראשונים צפויים לצאת לשיווק כבר בחודשים הקרובים, כאשר דגש מיוחד יינתן למוסדות חינוך ותשתיות מותאמות למשפחות ברוכות ילדים."
-        },
-        {
             tag: "מוזיקה",
-            title: "בכורה: מרדכי בן דוד ואיציק וינברג בדואט שסוחף את הרשת",
-            summary: "ענק הזמר החסידי משתף פעולה עם הכוכב העולה בסינגל חדש שכתב אלי לאופר.",
-            full: "עולם המוזיקה החסידית סוער: ענק הזמר מרדכי בן דוד שחרר הבוקר דואט מפתיע עם הכוכב הצעיר איציק וינברג. השיר, 'כיסופים', הולחן על ידי אלי לאופר ועובד על ידי יואלי דיקמן בהפקה בינלאומית.\n\nתוך שעות בודדות הפך השיר ללהיט בקרב חובבי המוזיקה, כאשר המבקרים משבחים את השילוב בין הקול הוותיק והמרגש של בן דוד לרעננות של וינברג. הקליפ צולם בהרי האלפים ומשלב טכנולוגיית צילום מתקדמת."
+            title: "בכורה: מרדכי בן דוד ואיציק וינברג בדואט חדש",
+            summary: "ענק הזמר החסידי משתף פעולה בסינגל 'כיסופים'.",
+            full: "השיר החדש 'כיסופים' הופך ללהיט בתוך שעות. ההפקה של יואלי דיקמן...",
+            link: "https://www.youtube.com" // כאן שמים קישור
         },
         {
-            tag: "עולם התורה",
-            title: "רבבות השתתפו במעמד סיום הש\"ס המרכזי בירושלים",
-            summary: "מעמד אדיר של כבוד התורה נערך אמש בהשתתפות גדולי הדור ואלפי לומדי 'הדף היומי'.",
-            full: "ירושלים לבשה חג: רבבות אלפי ישראל נהרו אמש למרכז העיר להשתתף במעמד סיום הש\"ס המרכזי. המעמד המרגש נערך בראשות מרנן ורבנן גדולי הדור שליט\"א, ששיבחו את אלפי הלומדים המתמידים בסדר 'הדף היומי'.\n\nבמהלך הערב נשמעו משאות קודש מפי גדולי התורה שהדגישו את חשיבות קביעת העיתים לתורה בכל מצב. 'זהו הניצחון האמיתי של עם ישראל', אמר אחד הנואמים המרכזיים לקול שירת 'אשריכם תלמידי חכמים' של הקהל העצום."
+            tag: "כלכלה",
+            title: "העיר החרדית החדשה 'כסלו' יוצאת לדרך",
+            summary: "אושרו 5,000 יחידות דיור חדשות בסמוך לבית שמש.",
+            full: "מצוקת הדיור בדרך לפתרון? המועצה הארצית נתנה אור ירוק...",
+            link: "https://www.google.com"
         }
     ];
 
@@ -127,23 +110,59 @@
         staticNews.forEach(item => {
             const card = document.createElement('div');
             card.className = 'news-card';
-            card.onclick = () => openArticle(item.tag, item.title, item.full);
+            card.onclick = () => openArticle(item.tag, item.title, item.full, item.link);
             card.innerHTML = `
                 <div class="card-body">
                     <span class="tag">${item.tag}</span>
                     <h2>${item.title}</h2>
                     <p>${item.summary}</p>
-                    <span class="read-more">קרא עוד...</span>
+                    <span style="color:var(--primary); font-weight:bold;">לחץ לקריאה מלאה וקישור ></span>
                 </div>
             `;
             feed.appendChild(card);
         });
+        loadSheetData(); // טעינת נתונים מהטבלה שלך
     }
 
-    function openArticle(tag, title, text) {
+    async function loadSheetData() {
+        const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEiMj_g_wbxpfVx5Gz8Wquy59Sjw7o6ZRGHOVmdVvgst1yQEIrFAkeUnsitnyWNJ7pWvTnE8CPjkDT/pub?output=csv';
+        try {
+            const response = await fetch(sheetURL);
+            const data = await response.text();
+            const rows = data.split('\n').slice(1);
+            const feed = document.getElementById('news-feed');
+
+            rows.forEach(row => {
+                const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                if (cols.length >= 2) {
+                    const title = cols[0].replace(/"/g, '');
+                    const content = cols[1].replace(/"/g, '');
+                    const cat = (cols[2] || 'עדכון').replace(/"/g, '');
+                    const link = cols[3] ? cols[3].replace(/"/g, '').trim() : null; // עמודה 4 בטבלה לקישור
+
+                    const card = document.createElement('div');
+                    card.className = 'news-card';
+                    card.onclick = () => openArticle(cat, title, content, link);
+                    card.innerHTML = `<div class="card-body"><span class="tag">${cat}</span><h2>${title}</h2><p>${content.substring(0, 100)}...</p></div>`;
+                    feed.appendChild(card);
+                }
+            });
+        } catch (e) { console.log("Sheet error"); }
+    }
+
+    function openArticle(tag, title, text, link) {
         document.getElementById('modal-tag').innerText = tag;
         document.getElementById('modal-title').innerText = title;
         document.getElementById('modal-body').innerText = text;
+        
+        const linkBtn = document.getElementById('modal-link');
+        if (link && link !== "") {
+            linkBtn.href = link;
+            linkBtn.style.display = 'inline-block';
+        } else {
+            linkBtn.style.display = 'none';
+        }
+        
         document.getElementById('articleModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
@@ -153,13 +172,8 @@
         document.body.style.overflow = 'auto';
     }
 
-    // הצגת תאריך
-    document.getElementById('date-display').innerText = new Date().toLocaleDateString('he-IL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
-    // טעינה
+    document.getElementById('date-display').innerText = new Date().toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long' });
     window.onload = renderNews;
-    window.onclick = (e) => { if(e.target == document.getElementById('articleModal')) closeArticle(); };
 </script>
-
 </body>
 </html>
