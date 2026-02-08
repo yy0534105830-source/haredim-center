@@ -57,4 +57,109 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .close-btn { position: absolute; top: 20px; left: 25px; font-size: 35px; cursor: pointer; color: #333; }
         .modal-content h1 { font-size: 38px; line-height: 1.1; margin: 20px 0; }
-        .modal-content .full-text { font-size: 21px; line-height: 1.9; color:
+        .modal-content .full-text { font-size: 21px; line-height: 1.9; color: #333; white-space: pre-wrap; }
+
+        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } .modal-content { padding: 20px; } .modal-content h1 { font-size: 28px; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-wrap">
+        <div class="logo"><span>LIVE</span> N-HAREDI</div>
+        <div id="date-display"></div>
+    </div>
+</header>
+
+<div class="container">
+    <main id="news-feed">
+        </main>
+
+    <aside class="sidebar">
+        <h3>מבזקים אחרונים</h3>
+        <div class="sidebar-item"><b>14:30</b> התפתחות בחקירת התאונה הקטלנית בכביש 1.</div>
+        <div class="sidebar-item"><b>14:12</b> מזג האוויר: ירידה בטמפרטורות בסוף השבוע.</div>
+        <div class="sidebar-item"><b>13:55</b> בני ברק: עומסי תנועה כבדים בצומת קוקה קולה.</div>
+        <div class="sidebar-item"><b>13:20</b> עולם התורה: פתיחת הרישום לישיבות קטנות בבית שמש.</div>
+    </aside>
+</div>
+
+<div id="articleModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeArticle()">&times;</span>
+        <span id="modal-tag" class="tag"></span>
+        <h1 id="modal-title"></h1>
+        <div id="modal-body" class="full-text"></div>
+    </div>
+</div>
+
+<script>
+    // מאגר חדשות מובנה מהימים האחרונים
+    const staticNews = [
+        {
+            tag: "פוליטיקה",
+            title: "דרמה לילית: מתווה חוק הגיוס הגיע להכרעה בבית גדולי ישראל",
+            summary: "אחרי שבועות של מתיחות, הושגו הסכמות על חוק הגיוס החדש שיסדיר את מעמד בני הישיבות.",
+            full: "אחרי שבועות ארוכים של מתיחות פוליטית ודיונים קדחתניים, הלילה הגיעה ההכרעה בנוגע למתווה חוק הגיוס החדש. בכירי הסיעות החרדיות נועדו עם גדולי ישראל והציגו את המתווה המעודכן שגובש מול משרד הביטחון.\n\nלפי המתווה, יישמר מעמד 'תורתו אומנותו' לכל בחור ישיבה המקדיש את זמנו ללימוד, תוך הקמת מסלולים ייעודיים ומותאמים למגזר החרדי עבור אלו שאינם לומדים. גורם ביהדות התורה מסר: 'הצלחנו להבטיח את המשך קיומו של עולם התורה ללא פשרות, תוך מתן פתרון חוקי ומסודר'."
+        },
+        {
+            tag: "כלכלה ונדל\"ן",
+            title: "בשורה לזוגות הצעירים: אושרו 5,000 יח\"ד בעיר החרדית 'כסלו'",
+            summary: "המועצה הארצית לתכנון ובנייה נתנה אור ירוק להקמת העיר החדשה הסמוכה לבית שמש.",
+            full: "היסטוריה בשוק הדיור החרדי: המועצה הארצית לתכנון ובנייה העניקה אתמול את האישורים הסופיים להקמת העיר החרדית החדשה 'כסלו'. העיר, שתיבנה בסמוך לבית שמש, צפויה לכלול בשלב הראשון כ-5,000 יחידות דיור במחירים מוזלים משמעותית ממחירי השוק.\n\nשר הבינוי והשיכון ציין כי מדובר בפתרון אסטרטגי למצוקת הדיור במגזר. המגרשים הראשונים צפויים לצאת לשיווק כבר בחודשים הקרובים, כאשר דגש מיוחד יינתן למוסדות חינוך ותשתיות מותאמות למשפחות ברוכות ילדים."
+        },
+        {
+            tag: "מוזיקה",
+            title: "בכורה: מרדכי בן דוד ואיציק וינברג בדואט שסוחף את הרשת",
+            summary: "ענק הזמר החסידי משתף פעולה עם הכוכב העולה בסינגל חדש שכתב אלי לאופר.",
+            full: "עולם המוזיקה החסידית סוער: ענק הזמר מרדכי בן דוד שחרר הבוקר דואט מפתיע עם הכוכב הצעיר איציק וינברג. השיר, 'כיסופים', הולחן על ידי אלי לאופר ועובד על ידי יואלי דיקמן בהפקה בינלאומית.\n\nתוך שעות בודדות הפך השיר ללהיט בקרב חובבי המוזיקה, כאשר המבקרים משבחים את השילוב בין הקול הוותיק והמרגש של בן דוד לרעננות של וינברג. הקליפ צולם בהרי האלפים ומשלב טכנולוגיית צילום מתקדמת."
+        },
+        {
+            tag: "עולם התורה",
+            title: "רבבות השתתפו במעמד סיום הש\"ס המרכזי בירושלים",
+            summary: "מעמד אדיר של כבוד התורה נערך אמש בהשתתפות גדולי הדור ואלפי לומדי 'הדף היומי'.",
+            full: "ירושלים לבשה חג: רבבות אלפי ישראל נהרו אמש למרכז העיר להשתתף במעמד סיום הש\"ס המרכזי. המעמד המרגש נערך בראשות מרנן ורבנן גדולי הדור שליט\"א, ששיבחו את אלפי הלומדים המתמידים בסדר 'הדף היומי'.\n\nבמהלך הערב נשמעו משאות קודש מפי גדולי התורה שהדגישו את חשיבות קביעת העיתים לתורה בכל מצב. 'זהו הניצחון האמיתי של עם ישראל', אמר אחד הנואמים המרכזיים לקול שירת 'אשריכם תלמידי חכמים' של הקהל העצום."
+        }
+    ];
+
+    function renderNews() {
+        const feed = document.getElementById('news-feed');
+        staticNews.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'news-card';
+            card.onclick = () => openArticle(item.tag, item.title, item.full);
+            card.innerHTML = `
+                <div class="card-body">
+                    <span class="tag">${item.tag}</span>
+                    <h2>${item.title}</h2>
+                    <p>${item.summary}</p>
+                    <span class="read-more">קרא עוד...</span>
+                </div>
+            `;
+            feed.appendChild(card);
+        });
+    }
+
+    function openArticle(tag, title, text) {
+        document.getElementById('modal-tag').innerText = tag;
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-body').innerText = text;
+        document.getElementById('articleModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeArticle() {
+        document.getElementById('articleModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // הצגת תאריך
+    document.getElementById('date-display').innerText = new Date().toLocaleDateString('he-IL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    // טעינה
+    window.onload = renderNews;
+    window.onclick = (e) => { if(e.target == document.getElementById('articleModal')) closeArticle(); };
+</script>
+
+</body>
+</html>
