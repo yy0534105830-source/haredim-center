@@ -3,202 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>חדשות חרדים | הפורטל המרכזי</title>
+    <title>חדשות חרדים | אוטומטי</title>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #002347; --accent: #c5a059; --danger: #e31e24;
-            --bg: #f4f7f9; --white: #ffffff; --text: #1a1a1a;
-            --radius: 12px; --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --bg: #f4f7f9; --radius: 12px; --shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-
-        body { font-family: 'Assistant', sans-serif; background-color: var(--bg); margin: 0; color: var(--text); line-height: 1.6; }
-
-        /* --- Header --- */
-        header { background: var(--primary); padding: 30px; text-align: center; color: white; border-bottom: 5px solid var(--accent); cursor: pointer; }
-        header h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 3.5rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-
-        .nav-wrapper { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 12px; display: flex; justify-content: center; gap: 25px; }
-        .nav-link { font-weight: 800; color: var(--primary); cursor: pointer; font-size: 1.1rem; padding: 5px 12px; border-radius: 20px; transition: 0.3s; }
-        .nav-link:hover { background: #eee; }
-
-        .container { max-width: 1400px; margin: 25px auto; padding: 0 20px; }
-
-        /* --- Hero Grid --- */
-        .hero-section { display: flex; gap: 20px; height: 550px; margin-bottom: 40px; }
-        .hero-medium { flex: 1.5; position: relative; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: #333; cursor: pointer; }
-        .hero-stack { flex: 1; display: flex; flex-direction: column; gap: 20px; }
-        .hero-small { flex: 1; position: relative; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: #333; cursor: pointer; }
+        body { font-family: 'Assistant', sans-serif; background-color: var(--bg); margin: 0; color: #1a1a1a; }
+        header { background: var(--primary); padding: 25px; text-align: center; color: white; border-bottom: 5px solid var(--accent); }
+        header h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 3rem; margin: 0; }
         
-        /* תיבת מבזקים נקייה (ללא IFRAME) */
-        .hero-flashes { width: 340px; background: white; border-radius: var(--radius); border-top: 5px solid var(--danger); box-shadow: var(--shadow); display: flex; flex-direction: column; overflow: hidden; }
-        .flashes-head { padding: 18px; font-weight: 800; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eee; color: var(--primary); }
-        .live-dot { width: 12px; height: 12px; background: var(--danger); border-radius: 50%; animation: pulse 1s infinite; }
+        .container { max-width: 1400px; margin: 25px auto; padding: 0 20px; }
+        
+        .hero-section { display: flex; gap: 20px; height: 500px; margin-bottom: 40px; }
+        .hero-main { flex: 1.5; position: relative; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: #333; }
+        .hero-side { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .hero-side-item { flex: 1; position: relative; border-radius: var(--radius); overflow: hidden; background: #333; }
+
+        /* תיבת המבזקים */
+        .hero-flashes { width: 340px; background: white; border-radius: var(--radius); border-top: 5px solid var(--danger); box-shadow: var(--shadow); display: flex; flex-direction: column; }
+        .flashes-head { padding: 15px; font-weight: 800; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eee; }
+        .live-dot { width: 10px; height: 10px; background: var(--danger); border-radius: 50%; animation: pulse 1s infinite; }
         .flashes-body { flex: 1; overflow-y: auto; padding: 5px; }
         
-        .flash-row { padding: 12px 15px; border-bottom: 1px solid #f1f1f1; font-size: 1rem; font-weight: 700; color: #2c3e50; transition: 0.2s; }
-        .flash-time { color: var(--danger); font-size: 0.85rem; margin-left: 8px; display: block; }
+        .flash-row { padding: 12px; border-bottom: 1px solid #f0f0f0; font-weight: 700; font-size: 0.95rem; line-height: 1.4; color: #333; }
+        .flash-time { color: var(--danger); font-size: 0.8rem; margin-left: 8px; font-weight: 800; }
 
-        /* --- קטגוריות צבעוניות --- */
-        .cat-badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; color: white; }
-        .cat-news { background: #2980b9; }    /* כחול - חדשות */
-        .cat-politics { background: #c0392b; } /* אדום - פוליטי */
-        .cat-world { background: #27ae60; }    /* ירוק - בעולם */
-        .cat-general { background: var(--accent); } /* זהב - כללי */
-
-        /* --- Cards --- */
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
-        .news-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: 0.3s; }
-        .news-card:hover { transform: translateY(-5px); }
-        .news-card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-content { padding: 20px; }
-
-        .overlay-text { position: absolute; bottom: 0; padding: 25px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; width: 100%; box-sizing: border-box; }
-        .overlay-text h2 { margin: 5px 0 0; font-size: 1.6rem; line-height: 1.3; }
-
+        .overlay { position: absolute; bottom: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; width: 100%; box-sizing: border-box; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-        @media (max-width: 1100px) { .hero-section { flex-direction: column; height: auto; } .hero-flashes { width: 100%; height: 400px; } }
+        
+        @media (max-width: 1100px) { .hero-section { flex-direction: column; height: auto; } .hero-flashes { width: 100%; height: 350px; } }
     </style>
 </head>
 <body>
 
-<header onclick="window.location.reload()"><h1>חדשות חרדים</h1></header>
-<div class="nav-wrapper" id="main-nav"></div>
+<header><h1>חדשות חרדים</h1></header>
 
-<div class="container" id="home-view">
+<div class="container">
     <div class="hero-section">
-        <div id="hero-med" class="hero-medium"></div>
-        <div id="hero-center" class="hero-stack"></div>
+        <div id="main-slot" class="hero-main"></div>
+        <div id="side-slots" class="hero-side"></div>
+        
         <div class="hero-flashes">
-            <div class="flashes-head"><div class="live-dot"></div>מבזקים</div>
+            <div class="flashes-head"><div class="live-dot"></div>מבזקים אוטומטיים</div>
             <div id="flashes-list" class="flashes-body">
-                <div style="padding:30px; text-align:center; color:#666;">טוען מבזקים...</div>
+                <div style="padding:20px; text-align:center;">מנסה להתחבר למבזקים...</div>
             </div>
         </div>
     </div>
-    <div id="grid-view" class="news-grid"></div>
-</div>
-
-<div id="article-view" class="container" style="display:none; background:white; padding:40px; border-radius:var(--radius); box-shadow:var(--shadow);">
-    <button onclick="showHome()" style="background:var(--primary); color:white; border:none; padding:12px 25px; border-radius:8px; cursor:pointer; font-weight:800; margin-bottom:20px;">← חזרה לראשי</button>
-    <div id="art-content"></div>
+    <div id="grid-view" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;"></div>
 </div>
 
 <script>
-    const repo = 'yy0534105830-source/news';
-    const rawBase = 'https://raw.githubusercontent.com/' + repo + '/main/';
-    let articles = [];
+    const userRepo = 'yy0534105830-source/news';
+    const base = `https://raw.githubusercontent.com/${userRepo}/main/`;
 
     async function start() {
-        fetchFlashes();
-        fetchArticles();
+        loadArticles();
+        fetchAutoFlashes();
     }
 
-    // פונקציית מבזקים שעוקפת חסימות נטפרי (משיכה כטקסט)
-    async function fetchFlashes() {
+    // פונקציית המבזקים האוטומטית - מותאמת לעקיפת חסימות
+    async function fetchAutoFlashes() {
         try {
-            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://xml.mako.co.il/syndication/rss/v1.xml')}&api_key=oy45vrtz9z8v1pghgoxf0v9skq6f0z5z5p5o2u7a`);
-            const data = await res.json();
-            if(data.status === 'ok') {
-                const html = data.items.slice(0, 15).map(item => {
-                    const time = new Date(item.pubDate).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
-                    return `<div class="flash-row"><span class="flash-time">${time}</span>${item.title}</div>`;
-                }).join('');
-                document.getElementById('flashes-list').innerHTML = html;
-            }
+            // אנחנו משתמשים במקור RSS של אתר חדשות ודרייבר שנועד לעקוף חסימות דפדפן
+            const rssUrl = 'https://xml.mako.co.il/syndication/rss/v1.xml';
+            const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+            
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            
+            // פענוח ה-XML שהתקבל
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+            const items = xmlDoc.querySelectorAll("item");
+            
+            let html = '';
+            items.forEach((item, index) => {
+                if(index < 15) { // 15 המבזקים האחרונים
+                    const title = item.querySelector("title").textContent;
+                    const pubDate = new Date(item.querySelector("pubDate").textContent);
+                    const time = pubDate.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                    html += `<div class="flash-row"><span class="flash-time">${time}</span>${title}</div>`;
+                }
+            });
+            
+            document.getElementById('flashes-list').innerHTML = html || 'אין מבזקים זמינים';
         } catch (e) {
-            document.getElementById('flashes-list').innerHTML = '<div style="padding:20px; text-align:center;">המבזקים זמינים כעת באתר המקורי</div>';
+            console.error("Flash Error:", e);
+            document.getElementById('flashes-list').innerHTML = '<div style="padding:20px; text-align:center;">המבזקים יתעדכנו בקרוב (שגיאת חיבור)</div>';
         }
     }
 
-    // קביעת צבע לפי קטגוריה
-    function getCatClass(cat) {
-        if (cat.includes('פוליטי')) return 'cat-politics';
-        if (cat.includes('עולם')) return 'cat-world';
-        if (cat.includes('חדשות')) return 'cat-news';
-        return 'cat-general';
-    }
-
-    async function fetchArticles() {
+    async function loadArticles() {
         try {
-            const res = await fetch(`https://api.github.com/repos/${repo}/contents/content/blog`);
+            const res = await fetch(`https://api.github.com/repos/${userRepo}/contents/content/blog`);
             const files = await res.json();
-            
-            articles = await Promise.all(files.reverse().map(async f => {
-                const r = await fetch(f.download_url);
-                const t = await r.text();
-                const m = { title: "כתבה", category: "כללי", img: "", body: "", position: "grid" };
-                const lines = t.split('---')[0].split('\n');
+            const articles = await Promise.all(files.reverse().slice(0, 10).map(async f => {
+                const text = await (await fetch(f.download_url)).text();
+                const m = { title: "כתבה", img: "", pos: "grid" };
+                const lines = text.split('\n');
                 lines.forEach(l => {
-                    if (l.startsWith('title:')) m.title = l.split(':')[1].trim().replace(/['"]/g, '');
-                    if (l.startsWith('category:')) m.category = l.split(':')[1].trim().replace(/['"]/g, '');
-                    if (l.startsWith('position:')) m.position = l.split(':')[1].trim().toLowerCase();
-                    if (l.startsWith('thumbnail:')) {
-                        let img = l.split(':')[1].trim().replace(/['"]/g, '');
-                        m.img = img.startsWith('http') ? img : rawBase + "images/" + img.replace(/^\/?images\//, '');
+                    if(l.startsWith('title:')) m.title = l.split(':')[1].trim().replace(/"/g,'');
+                    if(l.startsWith('position:')) m.pos = l.split(':')[1].trim();
+                    if(l.startsWith('thumbnail:')) {
+                        let img = l.split(':')[1].trim();
+                        m.img = img.startsWith('http') ? img : base + "images/" + img;
                     }
                 });
-                m.body = t.split('---').slice(1).join('---').trim();
                 return m;
             }));
-            render();
-        } catch(e) { console.error(e); }
-    }
 
-    function render() {
-        if(!articles.length) return;
+            const main = articles.find(a => a.pos === 'main') || articles[0];
+            if(main) {
+                document.getElementById('main-slot').innerHTML = `
+                    <img src="${main.img}" style="width:100%; height:100%; object-fit:cover;">
+                    <div class="overlay"><h2>${main.title}</h2></div>`;
+            }
+            
+            const sides = articles.filter(a => a.pos === 'stack').slice(0,2);
+            document.getElementById('side-slots').innerHTML = sides.map(s => `
+                <div class="hero-side-item">
+                    <img src="${s.img}" style="width:100%; height:100%; object-fit:cover;">
+                    <div class="overlay"><h3 style="margin:0; font-size:1.1rem;">${s.title}</h3></div>
+                </div>`).join('');
 
-        // תפריט קטגוריות
-        const cats = ['הכל', ...new Set(articles.map(a => a.category))];
-        document.getElementById('main-nav').innerHTML = cats.map(c => `<div class="nav-link" onclick="renderFiltered('${c}')">${c}</div>`).join('');
+            const grid = articles.filter(a => a.pos !== 'main' && a.pos !== 'stack');
+            document.getElementById('grid-view').innerHTML = grid.map(g => `
+                <div style="background:white; border-radius:12px; overflow:hidden; box-shadow:var(--shadow);">
+                    <img src="${g.img}" style="width:100%; height:150px; object-fit:cover;">
+                    <div style="padding:15px;"><h4 style="margin:0;">${g.title}</h4></div>
+                </div>`).join('');
 
-        const main = articles.find(a => a.position === 'main') || articles[0];
-        const stack = articles.filter(a => a.position === 'stack').slice(0, 2);
-        const grid = articles.filter(a => a !== main && !stack.includes(a));
-
-        document.getElementById('hero-med').innerHTML = `
-            <div onclick="openArt('${escape(main.title)}')" style="height:100%">
-                <img src="${main.img}" style="width:100%; height:100%; object-fit:cover;">
-                <div class="overlay-text">
-                    <span class="cat-badge ${getCatClass(main.category)}">${main.category}</span>
-                    <h2>${main.title}</h2>
-                </div>
-            </div>`;
-
-        document.getElementById('hero-center').innerHTML = stack.map(a => `
-            <div class="hero-small" onclick="openArt('${escape(a.title)}')">
-                <img src="${a.img}" style="width:100%; height:100%; object-fit:cover;">
-                <div class="overlay-text">
-                    <span class="cat-badge ${getCatClass(a.category)}" style="font-size:0.6rem;">${a.category}</span>
-                    <h2 style="font-size:1.1rem;">${a.title}</h2>
-                </div>
-            </div>`).join('');
-
-        document.getElementById('grid-view').innerHTML = grid.map(a => `
-            <div class="news-card" onclick="openArt('${escape(a.title)}')">
-                <img src="${a.img}">
-                <div class="card-content">
-                    <span class="cat-badge ${getCatClass(a.category)}">${a.category}</span>
-                    <h3 style="margin:5px 0; font-size:1.1rem; color:var(--primary);">${a.title}</h3>
-                </div>
-            </div>`).join('');
-    }
-
-    function openArt(title) {
-        const a = articles.find(art => art.title === unescape(title));
-        document.getElementById('home-view').style.display='none';
-        document.getElementById('article-view').style.display='block';
-        document.getElementById('art-content').innerHTML = `
-            <span class="cat-badge ${getCatClass(a.category)}" style="font-size:1rem; padding:5px 15px;">${a.category}</span>
-            <h1 style="font-family:'Frank Ruhl Libre'; font-size:3rem; margin:15px 0; color:var(--primary);">${a.title}</h1>
-            <img src="${a.img}" style="width:100%; border-radius:15px; margin-bottom:30px; box-shadow:var(--shadow);">
-            <div style="font-size:1.4rem; line-height:1.8; color:#333;">${a.body}</div>`;
-        window.scrollTo(0,0);
-    }
-
-    function showHome() {
-        document.getElementById('home-view').style.display='block';
-        document.getElementById('article-view').style.display='none';
+        } catch(e) {}
     }
 
     start();
