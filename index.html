@@ -3,76 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>פורטל חדשות אמין | עדכונים מסביב לשעון</title>
+    <title>פורטל חדשות | עדכונים שוטפים</title>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;800&family=Frank+Ruhl+Libre:wght@800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #0a192f; --accent: #b8924a; --danger: #cc0000;
             --bg: #f0f2f5; --white: #ffffff; --text: #1a1a1a;
-            --radius: 4px; /* מראה יותר מרובע ואמין */
+            --radius: 4px;
         }
 
-        body { font-family: 'Assistant', sans-serif; background-color: var(--bg); margin: 0; color: var(--text); }
+        body { font-family: 'Assistant', sans-serif; background-color: var(--bg); margin: 0; color: var(--text); direction: rtl; }
 
-        /* --- Header & Navigation --- */
-        header { background: var(--primary); padding: 30px; text-align: center; color: white; border-bottom: 4px solid var(--accent); }
-        header h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 3.5rem; margin: 0; letter-spacing: -1px; }
+        header { background: var(--primary); padding: 25px; text-align: center; color: white; border-bottom: 4px solid var(--accent); }
+        header h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 3rem; margin: 0; }
 
         .container { max-width: 1350px; margin: 25px auto; padding: 0 20px; }
 
-        /* --- ה-Hero החדש (3 עמודות קשיחות) --- */
+        /* --- Hero Grid (סדר חדש: ימין לשמאל) --- */
         .hero-container { 
             display: grid; 
-            grid-template-columns: 2.2fr 1fr 320px; 
+            grid-template-columns: 320px 2.2fr 1fr; /* מבזקים בצד ימין */
             gap: 15px; 
             height: 520px; 
             margin-bottom: 40px;
         }
 
-        /* עמודה 1: כתבה גדולה */
-        .hero-main { position: relative; overflow: hidden; background: #222; border-radius: var(--radius); cursor: pointer; }
-        
-        /* עמודה 2: שני ריבועים אחד על השני */
-        .hero-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 15px; }
-        .hero-stack-item { position: relative; overflow: hidden; background: #222; border-radius: var(--radius); cursor: pointer; }
-
-        /* עמודה 3: מבזקים */
+        /* עמודה 1 (ימין): מבזקים */
         .hero-flashes { 
             background: white; border-radius: var(--radius); 
             border-top: 4px solid var(--primary); 
             display: flex; flex-direction: column; overflow: hidden; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            order: 1; /* מבטיח מיקום ראשון מימין */
         }
-        .flashes-head { background: #f8f9fa; padding: 15px; font-weight: 800; font-size: 1.1rem; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
+
+        /* עמודה 2 (מרכז): כתבה ראשית */
+        .hero-main { 
+            position: relative; overflow: hidden; background: #222; 
+            border-radius: var(--radius); cursor: pointer;
+            order: 2; 
+        }
+
+        /* עמודה 3 (שמאל): שתי כתבות אחת מעל השנייה */
+        .hero-stack { 
+            display: grid; grid-template-rows: 1fr 1fr; gap: 15px; 
+            order: 3;
+        }
+        .hero-stack-item { position: relative; overflow: hidden; background: #222; border-radius: var(--radius); cursor: pointer; }
+
+        /* --- עיצוב תוכן המבזקים --- */
+        .flashes-head { background: #f8f9fa; padding: 15px; font-weight: 800; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
         .live-dot { width: 10px; height: 10px; background: var(--danger); border-radius: 50%; animation: pulse 1s infinite; }
         .flashes-list { flex: 1; overflow-y: auto; }
-        .flash-item { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; font-size: 0.95rem; font-weight: 600; cursor: default; }
+        .flash-item { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; font-size: 0.95rem; font-weight: 600; }
         .flash-item span { color: var(--danger); font-weight: 800; margin-left: 8px; font-size: 0.8rem; }
 
-        /* --- עיצוב תוכן --- */
+        /* --- עיצוב תוכן הכתבות --- */
         .overlay { 
             position: absolute; bottom: 0; right: 0; left: 0; 
             padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); 
             color: white; 
         }
-        .overlay h2 { margin: 8px 0 0; font-size: 1.6rem; line-height: 1.2; font-family: 'Frank Ruhl Libre', serif; }
-        .cat-tag { background: var(--accent); color: white; padding: 2px 8px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .overlay h2 { margin: 8px 0 0; font-size: 1.5rem; line-height: 1.2; font-family: 'Frank Ruhl Libre', serif; }
+        .cat-tag { background: var(--accent); color: white; padding: 2px 8px; font-size: 0.7rem; font-weight: 800; }
 
         img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
-        .hero-main:hover img, .hero-stack-item:hover img { transform: scale(1.03); }
-
-        /* --- News Grid --- */
+        
+        /* גריד תחתון */
         .bottom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .news-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; }
-        .card-img { height: 180px; background: #ddd; }
-        .card-body { padding: 15px; }
+        .news-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        @media (max-width: 1050px) {
+        @media (max-width: 1100px) {
             .hero-container { grid-template-columns: 1fr; height: auto; }
-            .hero-main { height: 300px; }
-            .hero-stack { height: 450px; }
+            .hero-flashes { order: 2; height: 350px; }
+            .hero-main { order: 1; height: 300px; }
+            .hero-stack { order: 3; height: 450px; }
         }
     </style>
 </head>
@@ -82,16 +89,16 @@
 
 <div class="container">
     <div class="hero-container">
-        <div id="main-slot" class="hero-main"></div>
-
-        <div class="hero-stack" id="stack-slots"></div>
-
         <div class="hero-flashes">
-            <div class="flashes-head"><div class="live-dot"></div>מבזקי עדכונים</div>
+            <div class="flashes-head"><div class="live-dot"></div>מבזקים</div>
             <div id="flashes-content" class="flashes-list">
                 <div style="padding:20px; text-align:center; color:#999;">טוען מבזקים...</div>
             </div>
         </div>
+
+        <div id="main-slot" class="hero-main"></div>
+
+        <div class="hero-stack" id="stack-slots"></div>
     </div>
 
     <div class="bottom-grid" id="grid-slots"></div>
@@ -106,9 +113,9 @@
         fetchContent();
     }
 
-    // מבזקים אוטומטיים מ-JDN (עובר נטפרי מצוין)
     async function fetchFlashes() {
         try {
+            // מקור JDN - ידידותי לנטפרי
             const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.jdn.co.il%2Ffeed%2F`);
             const data = await res.json();
             if(data.status === 'ok') {
@@ -119,7 +126,7 @@
                 document.getElementById('flashes-content').innerHTML = html;
             }
         } catch (e) {
-            document.getElementById('flashes-content').innerHTML = '<div style="padding:20px;">המבזקים יתעדכנו בקרוב</div>';
+            document.getElementById('flashes-content').innerHTML = '<div style="padding:20px;">העדכונים בטעינה...</div>';
         }
     }
 
@@ -142,7 +149,7 @@
                 return m;
             }));
 
-            // השמת הכתבות למקומות המיועדים
+            // השמה לפי מיקום
             const main = articles.find(a => a.pos === 'main') || articles[0];
             document.getElementById('main-slot').innerHTML = `
                 <img src="${main.img}" onerror="this.src='https://via.placeholder.com/800x500?text=News'">
@@ -158,14 +165,14 @@
             const grid = articles.filter(a => a !== main && !stack.includes(a));
             document.getElementById('grid-slots').innerHTML = grid.map(a => `
                 <div class="news-card">
-                    <div class="card-img"><img src="${a.img}" onerror="this.src='https://via.placeholder.com/300x200?text=News'"></div>
-                    <div class="card-body">
-                        <span style="color:var(--accent); font-weight:800; font-size:0.7rem;">${a.cat}</span>
-                        <h4 style="margin:5px 0; font-size:1rem;">${a.title}</h4>
+                    <div style="height:170px;"><img src="${a.img}" onerror="this.src='https://via.placeholder.com/300x200?text=News'"></div>
+                    <div style="padding:15px;">
+                        <span style="color:var(--accent); font-weight:800; font-size:0.75rem;">${a.cat}</span>
+                        <h4 style="margin:5px 0;">${a.title}</h4>
                     </div>
                 </div>`).join('');
 
-        } catch(e) { console.error(e); }
+        } catch(e) {}
     }
 
     init();
