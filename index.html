@@ -3,59 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>חדשות חרדים</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
+    <title>פורטל חדשות אמין | עדכונים מסביב לשעון</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;800&family=Frank+Ruhl+Libre:wght@800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #002347; --accent: #c5a059; --danger: #e31e24;
-            --bg: #f4f7f9; --radius: 12px; --shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        body { font-family: 'Assistant', sans-serif; background-color: var(--bg); margin: 0; color: #1a1a1a; overflow-x: hidden; }
-        
-        header { background: var(--primary); padding: 20px; text-align: center; color: white; border-bottom: 5px solid var(--accent); }
-        header h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 3rem; margin: 0; }
-
-        .container { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
-
-        /* עיצוב Hero נעול - Grid קשוח */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 2fr 1.2fr 320px;
-            grid-template-areas: "main stack flashes";
-            gap: 20px;
-            height: 520px;
-            margin-bottom: 30px;
+            --primary: #0a192f; --accent: #b8924a; --danger: #cc0000;
+            --bg: #f0f2f5; --white: #ffffff; --text: #1a1a1a;
+            --radius: 4px; /* מראה יותר מרובע ואמין */
         }
 
-        .hero-main { grid-area: main; position: relative; border-radius: var(--radius); overflow: hidden; background: #000; box-shadow: var(--shadow); }
-        .hero-stack { grid-area: stack; display: grid; grid-template-rows: 1fr 1fr; gap: 20px; }
-        .hero-item-side { position: relative; border-radius: var(--radius); overflow: hidden; background: #000; box-shadow: var(--shadow); }
+        body { font-family: 'Assistant', sans-serif; background-color: var(--bg); margin: 0; color: var(--text); }
+
+        /* --- Header & Navigation --- */
+        header { background: var(--primary); padding: 30px; text-align: center; color: white; border-bottom: 4px solid var(--accent); }
+        header h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 3.5rem; margin: 0; letter-spacing: -1px; }
+
+        .container { max-width: 1350px; margin: 25px auto; padding: 0 20px; }
+
+        /* --- ה-Hero החדש (3 עמודות קשיחות) --- */
+        .hero-container { 
+            display: grid; 
+            grid-template-columns: 2.2fr 1fr 320px; 
+            gap: 15px; 
+            height: 520px; 
+            margin-bottom: 40px;
+        }
+
+        /* עמודה 1: כתבה גדולה */
+        .hero-main { position: relative; overflow: hidden; background: #222; border-radius: var(--radius); cursor: pointer; }
         
+        /* עמודה 2: שני ריבועים אחד על השני */
+        .hero-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 15px; }
+        .hero-stack-item { position: relative; overflow: hidden; background: #222; border-radius: var(--radius); cursor: pointer; }
+
+        /* עמודה 3: מבזקים */
         .hero-flashes { 
-            grid-area: flashes; 
-            background: white; 
-            border-radius: var(--radius); 
-            border-top: 5px solid var(--danger); 
-            box-shadow: var(--shadow); 
-            display: flex; 
-            flex-direction: column;
-            overflow: hidden;
+            background: white; border-radius: var(--radius); 
+            border-top: 4px solid var(--primary); 
+            display: flex; flex-direction: column; overflow: hidden; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+        .flashes-head { background: #f8f9fa; padding: 15px; font-weight: 800; font-size: 1.1rem; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
+        .live-dot { width: 10px; height: 10px; background: var(--danger); border-radius: 50%; animation: pulse 1s infinite; }
+        .flashes-list { flex: 1; overflow-y: auto; }
+        .flash-item { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; font-size: 0.95rem; font-weight: 600; cursor: default; }
+        .flash-item span { color: var(--danger); font-weight: 800; margin-left: 8px; font-size: 0.8rem; }
 
-        .flashes-title { padding: 15px; font-weight: 800; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
-        .dot { width: 10px; height: 10px; background: var(--danger); border-radius: 50%; animation: blink 1s infinite; }
-        .flashes-list { flex: 1; overflow-y: auto; padding: 5px; }
-        .flash-card { padding: 12px; border-bottom: 1px solid #f5f5f5; font-size: 0.95rem; font-weight: 700; line-height: 1.4; }
-        .flash-card span { color: var(--danger); font-size: 0.8rem; display: block; margin-bottom: 3px; }
+        /* --- עיצוב תוכן --- */
+        .overlay { 
+            position: absolute; bottom: 0; right: 0; left: 0; 
+            padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); 
+            color: white; 
+        }
+        .overlay h2 { margin: 8px 0 0; font-size: 1.6rem; line-height: 1.2; font-family: 'Frank Ruhl Libre', serif; }
+        .cat-tag { background: var(--accent); color: white; padding: 2px 8px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
 
-        .overlay { position: absolute; bottom: 0; right: 0; left: 0; padding: 25px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; }
-        img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .hero-main:hover img, .hero-item-side:hover img { transform: scale(1.05); }
+        img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+        .hero-main:hover img, .hero-stack-item:hover img { transform: scale(1.03); }
 
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        /* --- News Grid --- */
+        .bottom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .news-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; }
+        .card-img { height: 180px; background: #ddd; }
+        .card-body { padding: 15px; }
 
-        @media (max-width: 1000px) {
-            .main-layout { grid-template-columns: 1fr; grid-template-areas: "main" "stack" "flashes"; height: auto; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        @media (max-width: 1050px) {
+            .hero-container { grid-template-columns: 1fr; height: auto; }
             .hero-main { height: 300px; }
             .hero-stack { height: 450px; }
         }
@@ -63,87 +78,94 @@
 </head>
 <body>
 
-<header><h1>חדשות חרדים</h1></header>
+<header><h1>פורטל החדשות</h1></header>
 
 <div class="container">
-    <div class="main-layout">
-        <div id="slot-main" class="hero-main"></div>
-        <div id="slot-stack" class="hero-stack"></div>
+    <div class="hero-container">
+        <div id="main-slot" class="hero-main"></div>
+
+        <div class="hero-stack" id="stack-slots"></div>
+
         <div class="hero-flashes">
-            <div class="flashes-title"><div class="dot"></div>עדכונים שוטפים</div>
-            <div id="list-flashes" class="flashes-list">
-                <div style="padding:20px; text-align:center; color:#999;">טוען עדכונים...</div>
+            <div class="flashes-head"><div class="live-dot"></div>מבזקי עדכונים</div>
+            <div id="flashes-content" class="flashes-list">
+                <div style="padding:20px; text-align:center; color:#999;">טוען מבזקים...</div>
             </div>
         </div>
     </div>
-    
-    <div id="grid-news" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
+
+    <div class="bottom-grid" id="grid-slots"></div>
 </div>
 
 <script>
-    const GITHUB_USER_REPO = 'yy0534105830-source/news';
-    const IMG_PATH = `https://raw.githubusercontent.com/${GITHUB_USER_REPO}/main/images/`;
+    const GITHUB_REPO = 'yy0534105830-source/news';
+    const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/`;
 
     async function init() {
-        getArticles();
-        getFlashes();
+        fetchFlashes();
+        fetchContent();
     }
 
-    // שימוש בקידוד כדי להסתיר את המקור מנטפרי
-    async function getFlashes() {
+    // מבזקים אוטומטיים מ-JDN (עובר נטפרי מצוין)
+    async function fetchFlashes() {
         try {
-            // הכתובת מקודדת כדי שבוט הסינון לא יזהה "mako" או "news" במבט ראשון
-            const encodedUrl = "aHR0cHM6Ly9hcGkucnNcommonpzb24uY29tL3YxL2FwaS5qc29uP3Jzc191cmw9aHR0cHMlM0ElMkYlMkZ4bWwubWFrby5jby5pbCUyRnN5bmRpY2F0aW9uJTJGcnNzJTJGdjEueG1s"; 
-            // לצורך הפשטות נשתמש במקור תקין עם "ניקוי" של RSS2JSON
-            const res = await fetch("https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fxml.mako.co.il%2Fsyndication%2Frss%2Fv1.xml");
+            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.jdn.co.il%2Ffeed%2F`);
             const data = await res.json();
-            
             if(data.status === 'ok') {
-                document.getElementById('list-flashes').innerHTML = data.items.map(i => {
-                    const time = new Date(i.pubDate).toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
-                    return `<div class="flash-card"><span>${time}</span>${i.title}</div>`;
+                const html = data.items.slice(0, 15).map(item => {
+                    const time = new Date(item.pubDate).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                    return `<div class="flash-item"><span>${time}</span>${item.title}</div>`;
                 }).join('');
+                document.getElementById('flashes-content').innerHTML = html;
             }
-        } catch(e) {
-            document.getElementById('list-flashes').innerHTML = '<div style="padding:20px;">העדכונים זמינים באתר הראשי</div>';
+        } catch (e) {
+            document.getElementById('flashes-content').innerHTML = '<div style="padding:20px;">המבזקים יתעדכנו בקרוב</div>';
         }
     }
 
-    async function getArticles() {
+    async function fetchContent() {
         try {
-            const res = await fetch(`https://api.github.com/repos/${GITHUB_USER_REPO}/contents/content/blog`);
+            const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/content/blog`);
             const files = await res.json();
-            const arts = await Promise.all(files.reverse().map(async f => {
+            const articles = await Promise.all(files.reverse().map(async f => {
                 const raw = await (await fetch(f.download_url)).text();
-                const obj = { title: "כתבה", img: "", pos: "grid" };
-                raw.split('\n').forEach(line => {
-                    if(line.startsWith('title:')) obj.title = line.split(':')[1].trim().replace(/"/g,'');
-                    if(line.startsWith('position:')) obj.pos = line.split(':')[1].trim();
-                    if(line.startsWith('thumbnail:')) {
-                        let img = line.split(':')[1].trim();
-                        obj.img = img.startsWith('http') ? img : IMG_PATH + img;
+                const m = { title: "כותרת", cat: "חדשות", img: "", pos: "grid" };
+                raw.split('\n').forEach(l => {
+                    if(l.startsWith('title:')) m.title = l.split(':')[1].trim().replace(/"/g,'');
+                    if(l.startsWith('category:')) m.cat = l.split(':')[1].trim();
+                    if(l.startsWith('position:')) m.pos = l.split(':')[1].trim();
+                    if(l.startsWith('thumbnail:')) {
+                        let t = l.split(':')[1].trim();
+                        m.img = t.startsWith('http') ? t : RAW_URL + "images/" + t;
                     }
                 });
-                return obj;
+                return m;
             }));
 
-            // השמה מדויקת לפי ה-Grid הקשיח
-            const main = arts.find(a => a.pos === 'main') || arts[0];
-            document.getElementById('slot-main').innerHTML = `<img src="${main.img}"><div class="overlay"><h2>${main.title}</h2></div>`;
-            
-            const stack = arts.filter(a => a.pos === 'stack').slice(0, 2);
-            document.getElementById('slot-stack').innerHTML = stack.map(s => `
-                <div class="hero-item-side">
-                    <img src="${s.img}"><div class="overlay"><h3 style="font-size:1.1rem;">${s.title}</h3></div>
+            // השמת הכתבות למקומות המיועדים
+            const main = articles.find(a => a.pos === 'main') || articles[0];
+            document.getElementById('main-slot').innerHTML = `
+                <img src="${main.img}" onerror="this.src='https://via.placeholder.com/800x500?text=News'">
+                <div class="overlay"><span class="cat-tag">${main.cat}</span><h2>${main.title}</h2></div>`;
+
+            const stack = articles.filter(a => a.pos === 'stack').slice(0, 2);
+            document.getElementById('stack-slots').innerHTML = stack.map(a => `
+                <div class="hero-stack-item">
+                    <img src="${a.img}" onerror="this.src='https://via.placeholder.com/400x300?text=News'">
+                    <div class="overlay"><span class="cat-tag" style="font-size:0.5rem;">${a.cat}</span><h2 style="font-size:1.1rem;">${a.title}</h2></div>
                 </div>`).join('');
 
-            const grid = arts.filter(a => a !== main && !stack.includes(a));
-            document.getElementById('grid-news').innerHTML = grid.map(g => `
-                <div style="background:white; border-radius:12px; overflow:hidden; box-shadow:var(--shadow);">
-                    <img src="${g.img}" style="height:180px; width:100%; object-fit:cover;">
-                    <div style="padding:15px;"><h4 style="margin:0;">${g.title}</h4></div>
+            const grid = articles.filter(a => a !== main && !stack.includes(a));
+            document.getElementById('grid-slots').innerHTML = grid.map(a => `
+                <div class="news-card">
+                    <div class="card-img"><img src="${a.img}" onerror="this.src='https://via.placeholder.com/300x200?text=News'"></div>
+                    <div class="card-body">
+                        <span style="color:var(--accent); font-weight:800; font-size:0.7rem;">${a.cat}</span>
+                        <h4 style="margin:5px 0; font-size:1rem;">${a.title}</h4>
+                    </div>
                 </div>`).join('');
-        } catch(e) {}
+
+        } catch(e) { console.error(e); }
     }
 
     init();
